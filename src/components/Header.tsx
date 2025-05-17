@@ -1,3 +1,4 @@
+import { CodeXml, Coffee } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "./ui/button";
 
@@ -13,24 +14,24 @@ const Header = () => {
         >
           sgsh.in
         </Button>
-        <a href="https://gotodash.sgsh.in" className="text-primary font-bold">
-          GotoDash
-        </a>
       </div>
+      <a href="https://gotodash.sgsh.in" className="text-primary font-bold">
+        GotoDash
+      </a>
       <div className="flex items-center gap-2">
         <a
           href="https://github.com/sgsh-in"
-          className="hover:underline decoration-wavy"
+          className="hover:animate-[sidenod_1s_ease-in-out_infinite]"
           target="_blank"
         >
-          Author
+          <Coffee size={18} strokeWidth={2} className="text-primary" />
         </a>
         <a
           href="https://github.com/sgsh-in/gotodash"
           className="hover:underline decoration-wavy"
           target="_blank"
         >
-          Project
+          <CodeXml size={18} strokeWidth={2} className="text-primary" />
         </a>
         <ModeToggle />
       </div>

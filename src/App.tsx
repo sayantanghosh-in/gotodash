@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/header";
 import { ThemeProvider } from "./components/theme-provider";
 import Expenses from "@/components/modules/expenses";
 

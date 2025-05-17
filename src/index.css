@@ -205,3 +205,15 @@ body {
     letter-spacing: var(--tracking-normal);
   }
 }
+
+@keyframes sidenod {
+  0%,
+  50%,
+  100% {
+    rotate: -15deg;
+  }
+  25%,
+  75% {
+    rotate: 15deg;
+  }
+}
