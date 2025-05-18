@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import ExpensesContent from "@/components/modules/expenses/expenses-content";
+import { ExpensesContent } from "@/components/modules/expenses/expenses-content";
 
 const Expenses = () => {
   return (
