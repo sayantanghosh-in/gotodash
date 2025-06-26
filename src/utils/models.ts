@@ -2,7 +2,7 @@ export interface IExpense {
   id: number;
   description?: string;
   amount: number;
-  updatedAt: Date;
+  updatedAt: string;
   expenseCategory: IExpenseCategory["id"];
   expenseCategoryTitle: IExpenseCategory["title"];
 }
