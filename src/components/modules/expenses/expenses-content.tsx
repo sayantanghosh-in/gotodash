@@ -7,7 +7,7 @@ import { ExpenseList } from "@/components/modules/expenses/expense-list";
 
 const ExpensesContent = () => {
   return (
-    <div className="bg-secondary grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div className="bg-chart-5 grid grid-cols-1 xl:grid-cols-2 gap-4">
       <ExpenseList />
       <Card className="m-4">
         <CardHeader>

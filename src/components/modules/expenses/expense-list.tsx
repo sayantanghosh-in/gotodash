@@ -56,7 +56,7 @@ const ExpenseList = () => {
       </CardHeader>
       <CardContent className="max-h-64 overflow-hidden overflow-y-auto">
         {isLoadingExpenses ? (
-          Array?.from({ length: 4 }, (_, index: number) => {
+          Array?.from({ length: 5 }, (_, index: number) => {
             return (
               <div
                 key={`expense-loader-${index}`}
