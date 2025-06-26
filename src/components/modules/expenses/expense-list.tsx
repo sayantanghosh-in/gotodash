@@ -45,7 +45,7 @@ const ExpenseList = () => {
   }, []);
 
   return (
-    <Card className="m-4">
+    <Card>
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <p>Expenses</p>
