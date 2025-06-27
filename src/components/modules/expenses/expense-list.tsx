@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { format } from "date-fns";
+import { Plus, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,51 +11,69 @@ import { fetchExpensesForCurrentMonth } from "@/utils/api";
 const ExpenseList = () => {
   const [isLoadingExpenses, setIsLoadingExpenses] = useState<boolean>(false);
   const [expenses, setExpenses] = useState<IExpense[]>([]);
+  const currentMonth = useRef<string>(format(new Date(), "MMMM"));
+
+  const loadExpenses = useCallback(() => {
+    setIsLoadingExpenses(true);
+    fetchExpensesForCurrentMonth()
+      .then((res) => {
+        setIsLoadingExpenses(false);
+        if (Array?.isArray(res?.data)) {
+          setExpenses(
+            res?.data?.map((expense) => {
+              return {
+                id: expense?.id,
+                amount: expense?.amount,
+                expenseCategory: expense?.expense_category,
+                expenseCategoryTitle: expense?.expense_category_title,
+                updatedAt: expense?.updated_at,
+                description: expense?.description,
+              };
+            })
+          );
+        } else if (res?.error) {
+          setIsLoadingExpenses(true);
+          console.error(res?.error);
+          setExpenses([]);
+        }
+      })
+      ?.catch((err) => {
+        setIsLoadingExpenses(false);
+        console.error(err);
+        setExpenses([]);
+      });
+  }, [expenses]);
 
   useEffect(() => {
-    if (!(Array?.isArray(expenses) && expenses?.length)) {
-      setIsLoadingExpenses(true);
-      fetchExpensesForCurrentMonth()
-        .then((res) => {
-          setIsLoadingExpenses(false);
-          if (Array?.isArray(res?.data)) {
-            setExpenses(
-              res?.data?.map((expense) => {
-                return {
-                  id: expense?.id,
-                  amount: expense?.amount,
-                  expenseCategory: expense?.expense_category,
-                  expenseCategoryTitle: expense?.expense_category_title,
-                  updatedAt: expense?.updated_at,
-                  description: expense?.description,
-                };
-              })
-            );
-          } else if (res?.error) {
-            setIsLoadingExpenses(true);
-            console.error(res?.error);
-            setExpenses([]);
-          }
-        })
-        ?.catch((err) => {
-          setIsLoadingExpenses(false);
-          console.error(err);
-          setExpenses([]);
-        });
-    }
-  }, []);
+    if (
+      typeof loadExpenses === "function" &&
+      !(Array?.isArray(expenses) && expenses?.length)
+    )
+      loadExpenses();
+  }, [expenses, loadExpenses]);
 
   return (
-    <Card>
+    <Card className="gap-2">
       <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <p>Expenses</p>
-          <Button variant="outline" size="icon">
-            <Plus size={16} />
-          </Button>
+        <CardTitle className="flex justify-between items-center gap-2">
+          <p className="text-xl">Expenses for {currentMonth?.current}</p>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => {
+                loadExpenses();
+              }}
+            >
+              <RefreshCcw size={16} />
+            </Button>
+            <Button variant="outline" size="icon">
+              <Plus size={16} />
+            </Button>
+          </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="max-h-64 overflow-hidden overflow-y-auto">
+      <CardContent className="h-64 overflow-hidden overflow-y-auto">
         {isLoadingExpenses ? (
           Array?.from({ length: 6 }, (_, index: number) => {
             return (
@@ -77,7 +96,9 @@ const ExpenseList = () => {
             return <Expense key={expense?.id} expense={expense} />;
           })
         ) : !isLoadingExpenses ? (
-          <p>No records found.</p>
+          <div className="w-full h-full flex justify-center items-center">
+            No records found.
+          </div>
         ) : (
           <></>
         )}

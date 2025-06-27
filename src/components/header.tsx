@@ -15,7 +15,10 @@ const Header = () => {
           sgsh.in
         </Button>
       </div>
-      <a href="https://gotodash.sgsh.in" className="text-primary font-bold">
+      <a
+        href="https://gotodash.sgsh.in"
+        className="text-primary font-bold hover:underline hover:decoration-wavy"
+      >
         GotoDash
       </a>
       <div className="flex items-center gap-2">
