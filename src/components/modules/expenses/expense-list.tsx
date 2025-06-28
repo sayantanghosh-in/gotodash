@@ -7,10 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Expense } from "@/components/modules/expenses/expense";
 import type { IExpense } from "@/utils/models";
 import { fetchExpensesForCurrentMonth } from "@/utils/api";
+import { EditExpense } from "./edit-expense";
 
 const ExpenseList = () => {
   const [isLoadingExpenses, setIsLoadingExpenses] = useState<boolean>(false);
   const [expenses, setExpenses] = useState<IExpense[]>([]);
+  const [newExpense, setNewExpense] = useState<IExpense | null>(null);
   const currentMonth = useRef<string>(format(new Date(), "MMMM"));
 
   const loadExpenses = useCallback(() => {
@@ -67,9 +69,16 @@ const ExpenseList = () => {
             >
               <RefreshCcw size={16} />
             </Button>
-            <Button variant="outline" size="icon">
-              <Plus size={16} />
-            </Button>
+            <EditExpense
+              isCreate
+              expense={newExpense}
+              onCreateOrEdit={console.log}
+              trigger={
+                <Button variant="outline" size="icon">
+                  <Plus size={16} />
+                </Button>
+              }
+            />
           </div>
         </CardTitle>
       </CardHeader>
