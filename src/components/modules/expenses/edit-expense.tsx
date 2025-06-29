@@ -1,4 +1,17 @@
-import { type ReactNode, useCallback } from "react";
+import { type ReactNode, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import {
   Dialog,
   DialogContent,
@@ -7,10 +20,38 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import type { IExpense } from "@/utils/models";
+import { format } from "date-fns";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const languages = [
+  { label: "English", value: "en" },
+  { label: "French", value: "fr" },
+  { label: "German", value: "de" },
+  { label: "Spanish", value: "es" },
+  { label: "Portuguese", value: "pt" },
+  { label: "Russian", value: "ru" },
+  { label: "Japanese", value: "ja" },
+  { label: "Korean", value: "ko" },
+  { label: "Chinese", value: "zh" },
+] as const;
 
 interface EditExpenseProps {
   isCreate?: boolean;
@@ -19,12 +60,44 @@ interface EditExpenseProps {
   trigger: ReactNode;
 }
 
+const formSchema = z.object({
+  expenseCategory: z.string({
+    required_error: "Please select a valid expense category",
+  }),
+  description: z.string().min(2, {
+    message: "Description must be at least 2 characters",
+  }),
+  amount: z
+    .number({
+      coerce: true,
+      message: "Please enter a valid number",
+    })
+    .min(0, {
+      message: "Amount should be atleast 0",
+    }),
+  updatedAt: z.date({
+    message: "Please select a valid date",
+  }),
+});
+
 const EditExpense = (props: EditExpenseProps) => {
-  const handleSubmit = useCallback(() => {
-    if (props?.expense?.id && typeof props?.onCreateOrEdit === "function") {
-      props?.onCreateOrEdit(props?.expense);
-    }
-  }, [props?.expense, props?.onCreateOrEdit]);
+  const [isCategoryPopoverOpen, setIsCategoryPopoverOpen] =
+    useState<boolean>(false);
+  const [isDatepickerOpen, setIsDatepickerOpen] = useState<boolean>(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      description: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
   return (
     <Dialog>
       <DialogTrigger className="flex flex-start">
@@ -41,13 +114,164 @@ const EditExpense = (props: EditExpenseProps) => {
               : "Edit your expense record"}
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <DialogClose>
-            <Button type="submit" onClick={handleSubmit}>
-              Save
-            </Button>
-          </DialogClose>
-        </DialogFooter>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="expenseCategory"
+              render={({ field }) => (
+                <FormItem className="mb-4 flex flex-col">
+                  <FormLabel>Category</FormLabel>
+                  <Popover
+                    open={isCategoryPopoverOpen}
+                    onOpenChange={setIsCategoryPopoverOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? languages.find(
+                                (language) => language.value === field.value
+                              )?.label
+                            : "Select language"}
+                          <ChevronsUpDown className="opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align="start"
+                      className="PopoverContent p-0"
+                    >
+                      <Command>
+                        <CommandInput
+                          placeholder="Search framework..."
+                          className="h-9"
+                        />
+                        <CommandList>
+                          <CommandEmpty>No expense category found</CommandEmpty>
+                          <CommandGroup>
+                            {languages.map((language) => (
+                              <CommandItem
+                                value={language.label}
+                                key={language.value}
+                                onSelect={() => {
+                                  form.setValue(
+                                    "expenseCategory",
+                                    language.value
+                                  );
+                                  setIsCategoryPopoverOpen(false);
+                                }}
+                              >
+                                {language.label}
+                                <Check
+                                  className={cn(
+                                    "ml-auto",
+                                    language.value === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="mb-4">
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Write something more about what the expense was for..."
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-primary" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="amount"
+              render={({ field }) => (
+                <FormItem className="mb-4">
+                  <FormLabel>Amount</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Amount spent" {...field} />
+                  </FormControl>
+                  <FormMessage className="text-primary" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="updatedAt"
+              render={({ field }) => (
+                <FormItem className="mb-4 flex flex-col">
+                  <FormLabel>Date</FormLabel>
+                  <Popover
+                    open={isDatepickerOpen}
+                    onOpenChange={setIsDatepickerOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field?.value ? (
+                            format(field?.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        required
+                        mode="single"
+                        selected={field.value}
+                        onSelect={(e: Date) => {
+                          field.onChange(e);
+                          setIsDatepickerOpen(false);
+                        }}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        captionLayout="dropdown"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="submit">Save</Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

@@ -74,8 +74,15 @@ const ExpenseList = () => {
               expense={newExpense}
               onCreateOrEdit={console.log}
               trigger={
-                <Button variant="outline" size="icon">
-                  <Plus size={16} />
+                /**
+                 * Since button cannot be a child of button (in EditExpense, DialogTrigger is a button),
+                 * we were getting a browser warning, hence using the asChild prop here and also wrapping
+                 * the icon inside a div to display properly as the Button asChild was causing some issues
+                 */
+                <Button asChild variant="outline" size="icon">
+                  <div className="w-[16px] h-[16px] p-4">
+                    <Plus size={16} />
+                  </div>
                 </Button>
               }
             />
