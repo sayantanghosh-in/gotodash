@@ -40,18 +40,7 @@ import type { IExpense } from "@/utils/models";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const languages = [
-  { label: "English", value: "en" },
-  { label: "French", value: "fr" },
-  { label: "German", value: "de" },
-  { label: "Spanish", value: "es" },
-  { label: "Portuguese", value: "pt" },
-  { label: "Russian", value: "ru" },
-  { label: "Japanese", value: "ja" },
-  { label: "Korean", value: "ko" },
-  { label: "Chinese", value: "zh" },
-] as const;
+import { useExpense } from "@/utils/contexts/ExpenseProvider";
 
 interface EditExpenseProps {
   isCreate?: boolean;
@@ -61,9 +50,9 @@ interface EditExpenseProps {
 }
 
 const formSchema = z.object({
-  expenseCategory: z.string({
+  expenseCategory: z.number({
     required_error: "Please select a valid expense category",
-  }),
+  }), // number because value will the id
   description: z.string().min(2, {
     message: "Description must be at least 2 characters",
   }),
@@ -81,6 +70,8 @@ const formSchema = z.object({
 });
 
 const EditExpense = (props: EditExpenseProps) => {
+  const { expenseCategories } = useExpense();
+
   const [isCategoryPopoverOpen, setIsCategoryPopoverOpen] =
     useState<boolean>(false);
   const [isDatepickerOpen, setIsDatepickerOpen] = useState<boolean>(false);
@@ -137,10 +128,11 @@ const EditExpense = (props: EditExpenseProps) => {
                           )}
                         >
                           {field.value
-                            ? languages.find(
-                                (language) => language.value === field.value
-                              )?.label
-                            : "Select language"}
+                            ? expenseCategories.find(
+                                (expenseCategory) =>
+                                  expenseCategory.id === field.value
+                              )?.title
+                            : "Select a category"}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
                       </FormControl>
@@ -157,23 +149,23 @@ const EditExpense = (props: EditExpenseProps) => {
                         <CommandList>
                           <CommandEmpty>No expense category found</CommandEmpty>
                           <CommandGroup>
-                            {languages.map((language) => (
+                            {expenseCategories.map((expenseCategory) => (
                               <CommandItem
-                                value={language.label}
-                                key={language.value}
+                                value={expenseCategory.title}
+                                key={expenseCategory.id}
                                 onSelect={() => {
                                   form.setValue(
                                     "expenseCategory",
-                                    language.value
+                                    expenseCategory.id
                                   );
                                   setIsCategoryPopoverOpen(false);
                                 }}
                               >
-                                {language.label}
+                                {expenseCategory.title}
                                 <Check
                                   className={cn(
                                     "ml-auto",
-                                    language.value === field.value
+                                    expenseCategory.id === field.value
                                       ? "opacity-100"
                                       : "opacity-0"
                                   )}

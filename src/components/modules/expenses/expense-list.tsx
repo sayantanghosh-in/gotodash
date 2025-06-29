@@ -1,64 +1,26 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { format } from "date-fns";
 import { Plus, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Expense } from "@/components/modules/expenses/expense";
-import type { IExpense } from "@/utils/models";
-import { fetchExpensesForCurrentMonth } from "@/utils/api";
+import { type IExpense } from "@/utils/models";
 import { EditExpense } from "./edit-expense";
+import { useExpense } from "@/utils/contexts/ExpenseProvider";
 
 const ExpenseList = () => {
-  const [isLoadingExpenses, setIsLoadingExpenses] = useState<boolean>(false);
-  const [expenses, setExpenses] = useState<IExpense[]>([]);
-  const [newExpense, setNewExpense] = useState<IExpense | null>(null);
-  const currentMonth = useRef<string>(format(new Date(), "MMMM"));
-
-  const loadExpenses = useCallback(() => {
-    setIsLoadingExpenses(true);
-    fetchExpensesForCurrentMonth()
-      .then((res) => {
-        setIsLoadingExpenses(false);
-        if (Array?.isArray(res?.data)) {
-          setExpenses(
-            res?.data?.map((expense) => {
-              return {
-                id: expense?.id,
-                amount: expense?.amount,
-                expenseCategory: expense?.expense_category,
-                expenseCategoryTitle: expense?.expense_category_title,
-                updatedAt: expense?.updated_at,
-                description: expense?.description,
-              };
-            })
-          );
-        } else if (res?.error) {
-          setIsLoadingExpenses(true);
-          console.error(res?.error);
-          setExpenses([]);
-        }
-      })
-      ?.catch((err) => {
-        setIsLoadingExpenses(false);
-        console.error(err);
-        setExpenses([]);
-      });
-  }, [expenses]);
-
-  useEffect(() => {
-    if (
-      typeof loadExpenses === "function" &&
-      !(Array?.isArray(expenses) && expenses?.length)
-    )
-      loadExpenses();
-  }, [expenses, loadExpenses]);
+  const {
+    currentMonth,
+    expenses,
+    loadExpenses,
+    newExpense,
+    isLoadingExpenses,
+  } = useExpense();
 
   return (
     <Card className="gap-2">
       <CardHeader>
         <CardTitle className="flex justify-between items-center gap-2">
-          <p className="text-xl">Expenses for {currentMonth?.current}</p>
+          <p className="text-xl">Expenses for {currentMonth}</p>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
