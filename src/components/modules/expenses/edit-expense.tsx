@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -79,7 +79,12 @@ const EditExpense = (props: EditExpenseProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: "",
+      expenseCategory: props?.expense?.expenseCategory,
+      description: props?.expense?.description || "",
+      amount: props?.expense?.amount,
+      updatedAt: props?.expense?.updatedAt
+        ? new Date(props?.expense?.updatedAt)
+        : new Date(),
     },
   });
 
@@ -88,6 +93,19 @@ const EditExpense = (props: EditExpenseProps) => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+
+  useEffect(() => {
+    if (props?.expense?.id) {
+      form?.reset({
+        expenseCategory: props?.expense?.expenseCategory,
+        description: props?.expense?.description || "",
+        amount: props?.expense?.amount,
+        updatedAt: props?.expense?.updatedAt
+          ? new Date(props?.expense?.updatedAt)
+          : new Date(),
+      });
+    }
+  }, [props?.expense?.id, form?.reset]);
 
   return (
     <Dialog>

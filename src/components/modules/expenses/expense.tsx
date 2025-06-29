@@ -51,7 +51,6 @@ const Expense = (props: ExpenseProps) => {
                   <Edit
                     size="16"
                     className="text-primary bg-secondary cursor-pointer border-primary hover:border-2 hover:bg-primary hover:text-secondary"
-                    onClick={() => console.log(`${props?.expense?.id} Edit`)}
                   />
                 }
                 onCreateOrEdit={console.log}
