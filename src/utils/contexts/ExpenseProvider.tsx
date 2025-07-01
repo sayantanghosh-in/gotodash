@@ -40,10 +40,16 @@ export const ExpenseProvider = ({
     IExpenseCategory[]
   >([]);
   const [newExpense, setNewExpense] = useState<IExpense | null>(null);
+  const [isExpensesEverFetched, setIsExpensesEverFetched] =
+    useState<boolean>(false);
+  const [isExpenseCategoriesEverFetched, setIsExpenseCategoriesEverFetched] =
+    useState<boolean>(false);
+
   const currentMonth = useRef(format(new Date(), "MMMM"));
 
   const loadExpenses = useCallback(() => {
     setIsLoadingExpenses(true);
+    setIsExpensesEverFetched(true);
     fetchExpensesForCurrentMonth()
       .then((res) => {
         setIsLoadingExpenses(false);
@@ -72,6 +78,7 @@ export const ExpenseProvider = ({
 
   const loadExpenseCategories = useCallback(() => {
     setIsLoadingExpenseCategories(true);
+    setIsExpenseCategoriesEverFetched(true);
     fetchExpenseCategories()
       .then((res) => {
         setIsLoadingExpenseCategories(false);
@@ -98,11 +105,12 @@ export const ExpenseProvider = ({
   }, []);
 
   useEffect(() => {
-    if (!expenses?.length) loadExpenses();
+    if (!isExpensesEverFetched && !expenses?.length) loadExpenses();
   }, [expenses?.length]);
 
   useEffect(() => {
-    if (!expenseCategories?.length) loadExpenseCategories();
+    if (!isExpenseCategoriesEverFetched && !expenseCategories?.length)
+      loadExpenseCategories();
   }, [expenseCategories?.length]);
 
   return (

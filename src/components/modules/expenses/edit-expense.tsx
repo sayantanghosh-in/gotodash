@@ -109,17 +109,15 @@ const EditExpense = (props: EditExpenseProps) => {
   );
 
   useEffect(() => {
-    if (props?.expense?.id) {
-      form?.reset({
-        expenseCategory: props?.expense?.expenseCategory,
-        description: props?.expense?.description || "",
-        amount: props?.expense?.amount,
-        updatedAt: props?.expense?.updatedAt
-          ? new Date(props?.expense?.updatedAt)
-          : new Date(),
-      });
-    }
-  }, [props?.expense?.id, form?.reset]);
+    form?.reset({
+      expenseCategory: props?.expense?.expenseCategory,
+      description: props?.expense?.description || "",
+      amount: props?.expense?.amount,
+      updatedAt: props?.expense?.updatedAt
+        ? new Date(props?.expense?.updatedAt)
+        : new Date(),
+    });
+  }, [form?.reset]);
 
   return (
     <Dialog

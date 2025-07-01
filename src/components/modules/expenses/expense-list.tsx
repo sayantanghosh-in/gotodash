@@ -30,6 +30,7 @@ const ExpenseList = () => {
             position: "top-center",
           });
           setIsEditExpenseModalOpen(false);
+          loadExpenses();
         } else {
           toast?.error(
             res?.error ||

@@ -7,12 +7,14 @@ import { Edit, Trash2 } from "lucide-react";
 import { DeleteExpense } from "./delete-expense";
 import { EditExpense } from "./edit-expense";
 import { createEditExpense, deleteExpense } from "@/utils/api";
+import { useExpense } from "@/utils/contexts/ExpenseProvider";
 
 interface ExpenseProps {
   expense: IExpense;
 }
 
 const Expense = (props: ExpenseProps) => {
+  const { loadExpenses } = useExpense();
   const [isEditExpenseModalOpen, setIsEditExpenseModalOpen] =
     useState<boolean>(false);
   const [isDeleteExpenseModalOpen, setIsDeleteExpenseModalOpen] =
@@ -26,6 +28,7 @@ const Expense = (props: ExpenseProps) => {
             position: "top-center",
           });
           setIsEditExpenseModalOpen(false);
+          loadExpenses();
         } else {
           toast?.error(
             res?.error ||
@@ -56,6 +59,7 @@ const Expense = (props: ExpenseProps) => {
             position: "top-center",
           });
           setIsDeleteExpenseModalOpen(false);
+          loadExpenses();
         } else {
           toast?.error(
             res?.error ||
