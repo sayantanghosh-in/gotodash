@@ -19,7 +19,7 @@ const Expense = (props: ExpenseProps) => {
     useState<boolean>(false);
 
   const handleEditExpense = (expense: CreateEditExpenseInput) => {
-    createEditExpense(expense, "create")
+    createEditExpense(expense, "edit")
       ?.then((res) => {
         if (!res?.error) {
           toast("Your expense was updated successfully", {
