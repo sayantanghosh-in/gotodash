@@ -1,13 +1,19 @@
+import { useState } from "react";
 import { Plus, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 import { Expense } from "@/components/modules/expenses/expense";
-import { type IExpense } from "@/utils/models";
+import { type CreateEditExpenseInput, type IExpense } from "@/utils/models";
 import { EditExpense } from "./edit-expense";
 import { useExpense } from "@/utils/contexts/ExpenseProvider";
+import { createEditExpense } from "@/utils/api";
 
 const ExpenseList = () => {
+  const [isEditExpenseModalOpen, setIsEditExpenseModalOpen] =
+    useState<boolean>(false);
+
   const {
     currentMonth,
     expenses,
@@ -16,6 +22,35 @@ const ExpenseList = () => {
     isLoadingExpenses,
   } = useExpense();
 
+  const handleCreateExpense = (expense: CreateEditExpenseInput) => {
+    createEditExpense(expense, "create")
+      ?.then((res) => {
+        if (!res?.error) {
+          toast("Your expense was recorded successfully", {
+            position: "top-center",
+          });
+          setIsEditExpenseModalOpen(false);
+        } else {
+          toast?.error(
+            res?.error ||
+              "Something went wrong while creating the expense record",
+            {
+              position: "top-center",
+            }
+          );
+        }
+      })
+      ?.catch((error) => {
+        toast?.error(
+          error?.message ||
+            "Something went wrong while creating the expense record",
+          {
+            position: "top-center",
+          }
+        );
+      });
+  };
+
   return (
     <Card className="gap-2">
       <CardHeader>
@@ -23,18 +58,23 @@ const ExpenseList = () => {
           <p className="text-xl">Expenses for {currentMonth}</p>
           <div className="flex items-center gap-2">
             <Button
+              asChild
               variant="outline"
               size="icon"
               onClick={() => {
                 loadExpenses();
               }}
             >
-              <RefreshCcw size={16} />
+              <div className="w-[16px] h-[16px] p-4">
+                <RefreshCcw size={16} />
+              </div>
             </Button>
             <EditExpense
               isCreate
+              isEditExpenseModalOpen={isEditExpenseModalOpen}
+              setIsEditExpenseModalOpen={setIsEditExpenseModalOpen}
               expense={newExpense}
-              onCreateOrEdit={console.log}
+              onCreateOrEdit={handleCreateExpense}
               trigger={
                 /**
                  * Since button cannot be a child of button (in EditExpense, DialogTrigger is a button),

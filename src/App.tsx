@@ -1,6 +1,7 @@
 import Header from "@/components/header";
 import { ThemeProvider } from "./components/theme-provider";
 import Expenses from "@/components/modules/expenses";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
           <Expenses />
         </div>
       </div>
+      <Toaster />
     </ThemeProvider>
   );
 }

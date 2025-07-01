@@ -98,12 +98,12 @@ export const ExpenseProvider = ({
   }, []);
 
   useEffect(() => {
-    if (!expenses.length) loadExpenses();
-  }, []);
+    if (!expenses?.length) loadExpenses();
+  }, [expenses?.length]);
 
   useEffect(() => {
-    if (!expenseCategories.length) loadExpenseCategories();
-  }, []);
+    if (!expenseCategories?.length) loadExpenseCategories();
+  }, [expenseCategories?.length]);
 
   return (
     <ExpenseContext.Provider

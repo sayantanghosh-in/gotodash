@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from "react";
+import React, { type ReactNode, useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -36,15 +36,17 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { IExpense } from "@/utils/models";
+import type { CreateEditExpenseInput, IExpense } from "@/utils/models";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useExpense } from "@/utils/contexts/ExpenseProvider";
 
 interface EditExpenseProps {
+  isEditExpenseModalOpen: boolean;
+  setIsEditExpenseModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isCreate?: boolean;
-  onCreateOrEdit: (expense: IExpense) => void;
+  onCreateOrEdit: (expense: CreateEditExpenseInput) => void;
   expense: IExpense | null;
   trigger: ReactNode;
 }
@@ -88,11 +90,23 @@ const EditExpense = (props: EditExpenseProps) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = useCallback(
+    (values: z.infer<typeof formSchema>) => {
+      if (typeof props?.onCreateOrEdit === "function") {
+        const expensePayload: CreateEditExpenseInput = {
+          ...(props?.isCreate ? {} : { id: props?.expense?.id }),
+          description: values?.description,
+          amount: values?.amount || 0,
+          expenseCategory: values?.expenseCategory as number,
+          updatedAt: values?.updatedAt?.toISOString(),
+        };
+        props?.onCreateOrEdit(expensePayload);
+      } else {
+        console.error(`ERR: Create/Edit expense form values`, values);
+      }
+    },
+    [props?.isCreate, props?.expense?.id, props?.onCreateOrEdit]
+  );
 
   useEffect(() => {
     if (props?.expense?.id) {
@@ -108,7 +122,10 @@ const EditExpense = (props: EditExpenseProps) => {
   }, [props?.expense?.id, form?.reset]);
 
   return (
-    <Dialog>
+    <Dialog
+      open={props?.isEditExpenseModalOpen}
+      onOpenChange={props?.setIsEditExpenseModalOpen}
+    >
       <DialogTrigger className="flex flex-start">
         {props?.trigger}
       </DialogTrigger>
@@ -195,7 +212,7 @@ const EditExpense = (props: EditExpenseProps) => {
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  <FormMessage />
+                  <FormMessage className="text-primary" />
                 </FormItem>
               )}
             />

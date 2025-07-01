@@ -7,6 +7,10 @@ export interface IExpense {
   expenseCategoryTitle: IExpenseCategory["title"];
 }
 
+export type CreateEditExpenseInput = {
+  id?: number;
+} & Pick<IExpense, "description" | "amount" | "updatedAt" | "expenseCategory">;
+
 export interface IExpenseCategory {
   id: number;
   title: string;
