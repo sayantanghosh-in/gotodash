@@ -109,15 +109,24 @@ const EditExpense = (props: EditExpenseProps) => {
   );
 
   useEffect(() => {
-    form?.reset({
-      expenseCategory: props?.expense?.expenseCategory,
-      description: props?.expense?.description || "",
-      amount: props?.expense?.amount,
-      updatedAt: props?.expense?.updatedAt
-        ? new Date(props?.expense?.updatedAt)
-        : new Date(),
-    });
-  }, [form?.reset]);
+    if (props.isEditExpenseModalOpen) {
+      form.reset({
+        expenseCategory: props?.expense?.expenseCategory ?? undefined,
+        description: props?.expense?.description ?? "",
+        amount: props?.expense?.amount ?? undefined,
+        updatedAt: props?.expense?.updatedAt
+          ? new Date(props?.expense?.updatedAt)
+          : new Date(),
+      });
+    } else {
+      form.reset({
+        expenseCategory: undefined,
+        description: "",
+        amount: undefined,
+        updatedAt: new Date(),
+      });
+    }
+  }, [props.isEditExpenseModalOpen, props.expense, props.isCreate]);
 
   return (
     <Dialog

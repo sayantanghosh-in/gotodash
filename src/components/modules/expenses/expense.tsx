@@ -92,7 +92,7 @@ const Expense = (props: ExpenseProps) => {
             setIsEditExpenseModalOpen={setIsEditExpenseModalOpen}
             expense={props?.expense}
             trigger={
-              <p className="text-sm font-medium text-primary text-wrap line-clamp-2 cursor-pointer hover:underline">
+              <p className="text-sm text-left font-medium text-primary text-wrap line-clamp-2 cursor-pointer hover:underline">
                 {props?.expense?.expenseCategoryTitle || "--"}
               </p>
             }
