@@ -56,7 +56,9 @@ const ExpenseList = () => {
     <Card className="gap-2">
       <CardHeader>
         <CardTitle className="flex justify-between items-center gap-2">
-          <p className="text-xl">Expenses for {currentMonth}</p>
+          <p className="text-reg md:text-xl">
+            🗓️ {currentMonth}, {new Date().getFullYear()}
+          </p>
           <div className="flex items-center gap-2">
             <Button
               asChild

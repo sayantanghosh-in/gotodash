@@ -15,8 +15,10 @@ const Expenses = () => {
     <ExpenseProvider>
       <Card>
         <CardHeader>
-          <CardTitle>Expenses</CardTitle>
-          <CardDescription>Manage all your montly expenses</CardDescription>
+          <CardTitle className="text-3xl">💰 Expenses</CardTitle>
+          <CardDescription className="text-lg">
+            Manage all your montly expenses
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ExpensesContent />

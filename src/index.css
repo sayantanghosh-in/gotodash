@@ -218,6 +218,18 @@ body {
   }
 }
 
+@keyframes blinkingBorder {
+  0%,
+  50%,
+  100% {
+    border-color: var(--primary);
+  }
+  25%,
+  75% {
+    border-color: var(--accent);
+  }
+}
+
 .PopoverContent {
   width: var(--radix-popover-trigger-width);
   max-height: var(--radix-popover-content-available-height);

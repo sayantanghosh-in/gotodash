@@ -5,8 +5,16 @@ import {
   useRef,
   useState,
   useContext,
+  useMemo,
 } from "react";
-import { format } from "date-fns";
+import {
+  addDays,
+  format,
+  isAfter,
+  isSameDay,
+  parseISO,
+  startOfWeek,
+} from "date-fns";
 import { type IExpenseCategory, type IExpense } from "@/utils/models";
 import {
   fetchExpenseCategories,
@@ -18,6 +26,8 @@ type ExpenseContextType = {
   expenseCategories: IExpenseCategory[];
   isLoadingExpenses: boolean;
   isLoadingExpenseCategories: boolean;
+  totalMonthlySpends: number;
+  dailyTotalExpensesForCurrentWeek: number[];
   loadExpenses: () => void;
   loadExpenseCategories: () => void;
   currentMonth: string;
@@ -46,6 +56,46 @@ export const ExpenseProvider = ({
     useState<boolean>(false);
 
   const currentMonth = useRef(format(new Date(), "MMMM"));
+
+  const totalMonthlySpends = useMemo(() => {
+    if (Array?.isArray(expenses) && expenses?.length) {
+      let total = 0;
+      expenses?.forEach((e) => {
+        total += e?.amount;
+      });
+      return total;
+    }
+    return 0;
+  }, [expenses]);
+
+  const dailyTotalExpensesForCurrentWeek = useMemo(() => {
+    // Start from Sunday of the current week
+    const today = new Date();
+    const weekStart = startOfWeek(today, { weekStartsOn: 0 }); // Sunday
+
+    // Initialize array for Sunday-Saturday
+    const totals = new Array(7).fill(0);
+
+    for (let i = 0; i < 7; i++) {
+      const currentDate = addDays(weekStart, i);
+
+      // Future day: set to 0
+      if (isAfter(currentDate, today)) {
+        totals[i] = 0;
+        continue;
+      }
+
+      // Aggregate expenses for this day
+      const sumForDay = expenses.reduce((sum, expense) => {
+        const expenseDate = parseISO(expense.updatedAt);
+        return isSameDay(expenseDate, currentDate) ? sum + expense.amount : sum;
+      }, 0);
+
+      totals[i] = sumForDay;
+    }
+
+    return totals; // Array of 7 numbers
+  }, [expenses]);
 
   const loadExpenses = useCallback(() => {
     setIsLoadingExpenses(true);
@@ -125,6 +175,8 @@ export const ExpenseProvider = ({
         currentMonth: currentMonth.current,
         newExpense,
         setNewExpense,
+        totalMonthlySpends,
+        dailyTotalExpensesForCurrentWeek,
       }}
     >
       {children}

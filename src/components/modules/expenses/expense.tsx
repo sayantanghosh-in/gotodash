@@ -85,7 +85,7 @@ const Expense = (props: ExpenseProps) => {
     <></>
   ) : (
     <>
-      <div className="mt-2 grid grid-cols-[7fr_1fr] gap-2">
+      <div className="grid grid-cols-[7fr_1fr] gap-2">
         <div className="flex flex-col gap-2">
           <EditExpense
             isEditExpenseModalOpen={isEditExpenseModalOpen}

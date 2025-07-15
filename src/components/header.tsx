@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 const Header = () => {
   return (
-    <div className="py-4 flex justify-between gap-2 items-center">
+    <div className=" py-4 flex justify-between gap-2 items-center border-b-2">
       <div className="flex items-center gap-2">
         <Button
           onClick={() => {
@@ -17,25 +17,27 @@ const Header = () => {
       </div>
       <a
         href="https://gotodash.sgsh.in"
-        className="text-primary font-bold hover:underline hover:decoration-wavy"
+        className="text-xl text-primary text-shadow-sm font-bold hover:underline hover:decoration-wavy"
       >
         GotoDash
       </a>
       <div className="flex items-center gap-2">
-        <a
-          href="https://github.com/sgsh-in"
-          className="hover:animate-[sidenod_1s_ease-in-out_infinite]"
-          target="_blank"
+        <Button
+          size="icon"
+          className="cursor-pointer hover:animate-[sidenod_1s_ease-in-out_infinite]"
         >
-          <Coffee size={18} strokeWidth={2} className="text-primary" />
-        </a>
-        <a
-          href="https://github.com/sgsh-in/gotodash"
-          className="hover:underline decoration-wavy"
-          target="_blank"
+          <a href="https://github.com/sgsh-in" target="_blank">
+            <Coffee size={18} strokeWidth={2} className="text-white" />
+          </a>
+        </Button>
+        <Button
+          size="icon"
+          className="cursor-pointer hover:animate-[sidenod_1s_ease-in-out_infinite]"
         >
-          <CodeXml size={18} strokeWidth={2} className="text-primary" />
-        </a>
+          <a href="https://github.com/sgsh-in/gotodash" target="_blank">
+            <CodeXml size={18} strokeWidth={2} className="text-white" />
+          </a>
+        </Button>
         <ModeToggle />
       </div>
     </div>
