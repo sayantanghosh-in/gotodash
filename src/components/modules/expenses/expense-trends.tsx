@@ -69,7 +69,14 @@ const ExpenseTrends = () => {
                 tickLine={false}
                 tickFormatter={(value) => value?.substring(0, 2)}
               />
-              <Tooltip formatter={(value) => [`₹${value}`, "Amount"]} />
+              <Tooltip
+                labelStyle={{
+                  color: "var(--primary)",
+                  fontWeight: "bold",
+                  textDecoration: "underline",
+                }}
+                formatter={(value) => [`₹${value}`, "Amount"]}
+              />
               <Bar dataKey="amount" fill="var(--chart-1)" radius={4}></Bar>
             </BarChart>
           </ResponsiveContainer>
