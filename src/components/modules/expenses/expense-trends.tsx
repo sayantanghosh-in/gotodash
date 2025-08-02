@@ -84,7 +84,7 @@ const ExpenseTrends = () => {
         <div className="flex items-center gap-2">
           <p className="text-reg">💸 Monthly Spends:</p>
           {isLoadingExpenses ? (
-            <Skeleton className="h-[28px] w-[200px]" />
+            <Skeleton className="h-[28px] w-[120px]" />
           ) : (
             <p className="text-reg md:text-xl px-2 border-2 border-dashed animate-[blinkingBorder_2s_ease-in-out_infinite]">
               {totalMonthlySpends}

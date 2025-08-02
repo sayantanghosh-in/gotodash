@@ -4,19 +4,19 @@ import { Button } from "./ui/button";
 
 const Header = () => {
   return (
-    <div className=" py-4 flex justify-between gap-2 items-center border-b-2">
+    <div className="py-4 flex justify-between gap-2 items-center border-b-2">
       <div className="flex items-center gap-2">
         <Button
           onClick={() => {
-            window.open("https://sgsh.in", "_blank");
+            window.open("https://sayantanghosh.in", "_blank");
           }}
-          className="cursor-pointer"
+          className="cursor-pointer text-xs md:text-reg"
         >
-          sgsh.in
+          sayantanghosh.in
         </Button>
       </div>
       <a
-        href="https://gotodash.sgsh.in"
+        href="https://gotodash.sayantanghosh.in"
         className="text-xl text-primary text-shadow-sm font-bold hover:underline hover:decoration-wavy"
       >
         GotoDash
@@ -26,7 +26,7 @@ const Header = () => {
           size="icon"
           className="cursor-pointer hover:animate-[sidenod_1s_ease-in-out_infinite]"
         >
-          <a href="https://github.com/sgsh-in" target="_blank">
+          <a href="https://github.com/sayantanghosh-in" target="_blank">
             <Coffee size={18} strokeWidth={2} className="text-white" />
           </a>
         </Button>
@@ -34,7 +34,10 @@ const Header = () => {
           size="icon"
           className="cursor-pointer hover:animate-[sidenod_1s_ease-in-out_infinite]"
         >
-          <a href="https://github.com/sgsh-in/gotodash" target="_blank">
+          <a
+            href="https://github.com/sayantanghosh-in/gotodash"
+            target="_blank"
+          >
             <CodeXml size={18} strokeWidth={2} className="text-white" />
           </a>
         </Button>
