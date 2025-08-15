@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { toast } from "sonner";
 import type { CreateEditExpenseInput, IExpense } from "@/utils/models";
-import { FE_DATE_FORMAT_MONIFIED } from "@/utils/constants";
+import { FE_DATE_FORMAT_MINIFIED } from "@/utils/constants";
 import { Edit, Trash2 } from "lucide-react";
 import { DeleteExpense } from "./delete-expense";
 import { EditExpense } from "./edit-expense";
@@ -102,7 +102,7 @@ const Expense = (props: ExpenseProps) => {
             <p className="text-xs">
               {format(
                 parseISO(props?.expense?.updatedAt),
-                FE_DATE_FORMAT_MONIFIED
+                FE_DATE_FORMAT_MINIFIED
               )}
             </p>
           ) : (
