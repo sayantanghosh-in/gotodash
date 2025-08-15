@@ -87,3 +87,25 @@ export const deleteExpense = (
     return Promise?.reject(e);
   }
 };
+
+/**
+ * Description: API to check if there is an existing session
+ * @returns {Promise<{ user?: any, status?: number, error?: string }>} - The data from the endpoint.
+ */
+export const checkSession = (): Promise<{
+  status?: number;
+  error?: string;
+  user?: {
+    id: string;
+    email: string;
+  };
+}> => {
+  try {
+    return fetch(BE_API_ENDPOINT + "/auth/me", {
+      credentials: "include",
+    })?.then((res) => res?.json());
+  } catch (e) {
+    console.error(`Delete expense error`, e);
+    return Promise?.reject(e);
+  }
+};
