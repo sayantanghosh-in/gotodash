@@ -210,11 +210,11 @@ body {
   0%,
   50%,
   100% {
-    rotate: -15deg;
+    rotate: -7deg;
   }
   25%,
   75% {
-    rotate: 15deg;
+    rotate: 7deg;
   }
 }
 

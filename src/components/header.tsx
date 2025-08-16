@@ -23,6 +23,7 @@ const Header = () => {
       </a>
       <div className="flex items-center gap-2">
         <Button
+          asChild
           size="icon"
           className="cursor-pointer hover:animate-[sidenod_1s_ease-in-out_infinite]"
         >
@@ -31,6 +32,7 @@ const Header = () => {
           </a>
         </Button>
         <Button
+          asChild
           size="icon"
           className="cursor-pointer hover:animate-[sidenod_1s_ease-in-out_infinite]"
         >
