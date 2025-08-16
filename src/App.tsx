@@ -46,7 +46,7 @@ function App() {
             <Loader />
           </div>
         ) : isLoggedIn ? (
-          <div className="mt-2 md:mt-4">
+          <div className="my-2 md:my-4">
             <Expenses />
           </div>
         ) : (

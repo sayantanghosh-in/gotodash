@@ -1,9 +1,11 @@
 import { ExpenseList } from "@/components/modules/expenses/expense-list";
-import { ExpenseTrends } from "./expense-trends";
+import { ExpenseTrends } from "@/components/modules/expenses/expense-trends";
+import { ExpenseGoal } from "@/components/modules/expenses/expense-goal";
 
 const ExpensesContent = () => {
   return (
-    <div className="bg-chart-5 shadow grid grid-cols-1 xl:grid-cols-[3fr_5fr] p-2 md:p-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <ExpenseGoal />
       <ExpenseTrends />
       <ExpenseList />
     </div>

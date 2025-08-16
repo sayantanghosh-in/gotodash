@@ -18,3 +18,15 @@ export interface IExpenseCategory {
   maxAmountPerMonth: number;
   updatedAt: Date;
 }
+
+export interface IExpenseCategoryGoalData {
+  expense_category_title: string;
+  amount_pending: number;
+  amount_spent: number;
+}
+
+export interface IExpenseCategoryGoal {
+  expenseCategoryTitle: string;
+  amountSpent: number;
+  amountPending: number;
+}

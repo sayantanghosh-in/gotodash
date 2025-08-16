@@ -15,21 +15,29 @@ import {
   parseISO,
   startOfWeek,
 } from "date-fns";
-import { type IExpenseCategory, type IExpense } from "@/utils/models";
+import {
+  type IExpenseCategory,
+  type IExpense,
+  type IExpenseCategoryGoal,
+} from "@/utils/models";
 import {
   fetchExpenseCategories,
+  fetchExpenseCategoryGoals,
   fetchExpensesForCurrentMonth,
 } from "@/utils/api";
 
 type ExpenseContextType = {
   expenses: IExpense[];
   expenseCategories: IExpenseCategory[];
+  expenseCategoryGoals: IExpenseCategoryGoal[];
   isLoadingExpenses: boolean;
   isLoadingExpenseCategories: boolean;
+  isLoadingExpenseCategoryGoals: boolean;
   totalMonthlySpends: number;
   dailyTotalExpensesForCurrentWeek: number[];
   loadExpenses: () => void;
   loadExpenseCategories: () => void;
+  loadExpenseCategoryGoals: () => void;
   currentMonth: string;
   newExpense: IExpense | null;
   setNewExpense: (e: IExpense | null) => void;
@@ -45,15 +53,24 @@ export const ExpenseProvider = ({
   const [isLoadingExpenses, setIsLoadingExpenses] = useState(false);
   const [isLoadingExpenseCategories, setIsLoadingExpenseCategories] =
     useState(false);
+  const [isLoadingExpenseCategoryGoals, setIsLoadingExpenseCategoryGoals] =
+    useState<boolean>(false);
   const [expenses, setExpenses] = useState<IExpense[]>([]);
   const [expenseCategories, setExpenseCategories] = useState<
     IExpenseCategory[]
+  >([]);
+  const [expenseCategoryGoals, setExpenseCategoryGoals] = useState<
+    IExpenseCategoryGoal[]
   >([]);
   const [newExpense, setNewExpense] = useState<IExpense | null>(null);
   const [isExpensesEverFetched, setIsExpensesEverFetched] =
     useState<boolean>(false);
   const [isExpenseCategoriesEverFetched, setIsExpenseCategoriesEverFetched] =
     useState<boolean>(false);
+  const [
+    isExpenseCategoryGoalsEverFetched,
+    setIsExpenseCategoryGoalsEverFetched,
+  ] = useState<boolean>(false);
 
   const currentMonth = useRef(format(new Date(), "MMMM"));
 
@@ -154,6 +171,32 @@ export const ExpenseProvider = ({
       });
   }, []);
 
+  const loadExpenseCategoryGoals = useCallback(() => {
+    setIsLoadingExpenseCategoryGoals(true);
+    setIsExpenseCategoryGoalsEverFetched(true);
+    fetchExpenseCategoryGoals()
+      .then((res) => {
+        setIsLoadingExpenseCategoryGoals(false);
+        if (Array.isArray(res?.data)) {
+          setExpenseCategoryGoals(
+            res.data.map((goal) => ({
+              expenseCategoryTitle: goal?.expense_category_title || "",
+              amountPending: goal?.amount_pending || 0,
+              amountSpent: goal?.amount_spent || 0,
+            }))
+          );
+        } else {
+          console.error(res?.error);
+          setExpenseCategoryGoals([]);
+        }
+      })
+      .catch((err) => {
+        setIsLoadingExpenseCategoryGoals(false);
+        console.error(err);
+        setExpenseCategoryGoals([]);
+      });
+  }, []);
+
   useEffect(() => {
     if (!isExpensesEverFetched && !expenses?.length) loadExpenses();
   }, [expenses?.length, isExpensesEverFetched, loadExpenses]);
@@ -167,15 +210,27 @@ export const ExpenseProvider = ({
     loadExpenseCategories,
   ]);
 
+  useEffect(() => {
+    if (!isExpenseCategoryGoalsEverFetched && !expenseCategoryGoals?.length)
+      loadExpenseCategoryGoals();
+  }, [
+    expenseCategoryGoals?.length,
+    isExpenseCategoryGoalsEverFetched,
+    loadExpenseCategoryGoals,
+  ]);
+
   return (
     <ExpenseContext.Provider
       value={{
         expenses,
         expenseCategories,
+        expenseCategoryGoals,
         isLoadingExpenses,
         isLoadingExpenseCategories,
+        isLoadingExpenseCategoryGoals,
         loadExpenses,
         loadExpenseCategories,
+        loadExpenseCategoryGoals,
         currentMonth: currentMonth.current,
         newExpense,
         setNewExpense,

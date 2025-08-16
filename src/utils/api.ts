@@ -3,10 +3,11 @@ import type {
   CreateEditExpenseInput,
   IExpense,
   IExpenseCategory,
+  IExpenseCategoryGoalData,
 } from "./models";
 
 /**
- * Description: Fetches the expenses for the current month.
+ * Description: Fetch the expenses for the current month.
  * @returns {Promise<{ data: IExpense }>} - The data from the endpoint.
  */
 
@@ -20,7 +21,7 @@ export const fetchExpensesForCurrentMonth = (): Promise<{
 };
 
 /**
- * Description: Fetches the expense categories
+ * Description: Fetch the expense categories
  * @returns {Promise<{ data: IExpenseCategory }>} - The data from the endpoint.
  */
 
@@ -29,6 +30,20 @@ export const fetchExpenseCategories = (): Promise<{
   error?: string;
 }> => {
   return fetch(BE_API_ENDPOINT + "/expenses-category/all", {
+    credentials: "include",
+  })?.then((res) => res?.json());
+};
+
+/**
+ * Description: Fetch the expense categories
+ * @returns {Promise<{ data: IExpenseCategoryGoalData[] }>} - The data from the endpoint.
+ */
+
+export const fetchExpenseCategoryGoals = (): Promise<{
+  data: IExpenseCategoryGoalData[];
+  error?: string;
+}> => {
+  return fetch(BE_API_ENDPOINT + "/expenses-category/goals", {
     credentials: "include",
   })?.then((res) => res?.json());
 };

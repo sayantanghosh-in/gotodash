@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { useExpense } from "@/utils/contexts/ExpenseProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ChartColumn, Receipt } from "lucide-react";
 
 const chartConfig = {
   amount: {
@@ -56,7 +57,10 @@ const ExpenseTrends = () => {
     <Card className="gap-2">
       <CardHeader>
         <CardTitle>
-          <p className="text-reg md:text-xl">📊 This week</p>
+          <p className="flex items-center gap-1.25 text-sm md:text-md">
+            <ChartColumn size={18} color="var(--primary)" />
+            <span>This week</span>
+          </p>
         </CardTitle>
       </CardHeader>
       <CardContent className="min-h-32 h-auto md:min-h-auto md:h-64 overflow-hidden overflow-y-auto flex flex-col justify-between">
@@ -81,8 +85,11 @@ const ExpenseTrends = () => {
             </BarChart>
           </ResponsiveContainer>
         </ChartContainer>
-        <div className="flex items-center gap-2">
-          <p className="text-reg">💸 Monthly Spends:</p>
+        <div className="flex items-center gap-1.25">
+          <p className="text-sm md:text-md flex gap-0.75 items-center">
+            <Receipt size={18} color="var(--primary)" />
+            <span>Monthly Spends:</span>
+          </p>
           {isLoadingExpenses ? (
             <Skeleton className="h-[28px] w-[120px]" />
           ) : (

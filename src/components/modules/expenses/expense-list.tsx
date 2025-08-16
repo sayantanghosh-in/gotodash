@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, RefreshCcw } from "lucide-react";
+import { CircleDollarSign, Plus, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +18,7 @@ const ExpenseList = () => {
     currentMonth,
     expenses,
     loadExpenses,
+    loadExpenseCategoryGoals,
     newExpense,
     isLoadingExpenses,
   } = useExpense();
@@ -56,8 +57,11 @@ const ExpenseList = () => {
     <Card className="gap-2">
       <CardHeader>
         <CardTitle className="flex justify-between items-center gap-2">
-          <p className="text-reg md:text-xl">
-            🗓️ {currentMonth}, {new Date().getFullYear()}
+          <p className="flex items-center gap-1.25 text-sm md:text-md">
+            <CircleDollarSign size={18} color="var(--primary)" />
+            <span>
+              Payments {currentMonth}, {new Date().getFullYear()}
+            </span>
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -66,6 +70,7 @@ const ExpenseList = () => {
               size="icon"
               onClick={() => {
                 loadExpenses();
+                loadExpenseCategoryGoals();
               }}
             >
               <div className="w-[16px] h-[16px] p-4">
@@ -113,9 +118,11 @@ const ExpenseList = () => {
             );
           })
         ) : Array?.isArray(expenses) && expenses?.length ? (
-          expenses?.map((expense: IExpense) => {
-            return <Expense key={expense?.id} expense={expense} />;
-          })
+          <div className="flex flex-col gap-3 md:gap-2">
+            {expenses?.map((expense: IExpense) => {
+              return <Expense key={expense?.id} expense={expense} />;
+            })}
+          </div>
         ) : !isLoadingExpenses ? (
           <div className="w-full h-full flex justify-center items-center">
             No records found.
