@@ -156,12 +156,16 @@ export const ExpenseProvider = ({
 
   useEffect(() => {
     if (!isExpensesEverFetched && !expenses?.length) loadExpenses();
-  }, [expenses?.length]);
+  }, [expenses?.length, isExpensesEverFetched, loadExpenses]);
 
   useEffect(() => {
     if (!isExpenseCategoriesEverFetched && !expenseCategories?.length)
       loadExpenseCategories();
-  }, [expenseCategories?.length]);
+  }, [
+    expenseCategories?.length,
+    isExpenseCategoriesEverFetched,
+    loadExpenseCategories,
+  ]);
 
   return (
     <ExpenseContext.Provider

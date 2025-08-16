@@ -93,7 +93,6 @@ export const deleteExpense = (
  * @returns {Promise<{ user?: any, status?: number, error?: string }>} - The data from the endpoint.
  */
 export const checkSession = (): Promise<{
-  status?: number;
   error?: string;
   user?: {
     id: string;

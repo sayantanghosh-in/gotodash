@@ -10,7 +10,7 @@ import { Loader } from "@/components/loader";
 // utils and constants
 import { ThemeProvider } from "@/components/theme-provider";
 import { checkSession } from "@/utils/api";
-import { WEBSITE_URL } from "@/utils/constants";
+import { GOTODASH_URL, WEBSITE_URL } from "@/utils/constants";
 
 function App() {
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
@@ -19,17 +19,13 @@ function App() {
   useEffect(() => {
     checkSession()
       ?.then((res) => {
-        if (
-          res.status === 200 &&
-          typeof res?.user?.id === "string" &&
-          res?.user?.id?.length > 0
-        ) {
+        if (typeof res?.user?.id === "string" && res?.user?.id?.length > 0) {
+          setIsCheckingSession(false);
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);
           window.location.replace(
-            WEBSITE_URL +
-              "/login?redirect_url=https://gotodash.sayantanghosh.in"
+            WEBSITE_URL + `/login?redirect_url=${GOTODASH_URL}`
           );
         }
       })

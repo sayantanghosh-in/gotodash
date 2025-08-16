@@ -79,7 +79,7 @@ const Expense = (props: ExpenseProps) => {
           }
         );
       });
-  }, [props?.expense?.id]);
+  }, [loadExpenses, props?.expense?.id]);
 
   return !props?.expense?.id ? (
     <></>

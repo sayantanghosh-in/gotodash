@@ -126,7 +126,7 @@ const EditExpense = (props: EditExpenseProps) => {
         updatedAt: new Date(),
       });
     }
-  }, [props.isEditExpenseModalOpen, props.expense, props.isCreate]);
+  }, [form, props.isEditExpenseModalOpen, props.expense, props.isCreate]);
 
   return (
     <Dialog
