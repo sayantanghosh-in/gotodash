@@ -14,9 +14,9 @@ export const fetchExpensesForCurrentMonth = (): Promise<{
   data: IExpense;
   error?: string;
 }> => {
-  return fetch(BE_API_ENDPOINT + "/expenses/monthly")?.then((res) =>
-    res?.json()
-  );
+  return fetch(BE_API_ENDPOINT + "/expenses/monthly", {
+    credentials: "include",
+  })?.then((res) => res?.json());
 };
 
 /**
@@ -28,9 +28,9 @@ export const fetchExpenseCategories = (): Promise<{
   data: IExpenseCategory;
   error?: string;
 }> => {
-  return fetch(BE_API_ENDPOINT + "/expenses-category/all")?.then((res) =>
-    res?.json()
-  );
+  return fetch(BE_API_ENDPOINT + "/expenses-category/all", {
+    credentials: "include",
+  })?.then((res) => res?.json());
 };
 
 /**
@@ -56,6 +56,7 @@ export const createEditExpense = (
     return fetch(BE_API_ENDPOINT + "/expenses", {
       method: operation === "create" ? "POST" : "PUT",
       body: JSON.stringify(expensePayload),
+      credentials: "include",
     })?.then((res) => res?.json());
   } catch (e) {
     console.error(`Create / Edit expense error`, e);
@@ -81,6 +82,7 @@ export const deleteExpense = (
     return fetch(BE_API_ENDPOINT + "/expenses", {
       method: "DELETE",
       body: JSON.stringify(expensePayload),
+      credentials: "include",
     })?.then((res) => res?.json());
   } catch (e) {
     console.error(`Delete expense error`, e);
