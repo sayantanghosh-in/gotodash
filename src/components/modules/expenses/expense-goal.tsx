@@ -37,57 +37,76 @@ const ExpenseGoal = () => {
           <div className="flex flex-col gap-2">
             {expenseCategoryGoals?.map((goal, goalIndex) => {
               return (
-                <div
-                  className="flex gap-2 justify-between items-start"
-                  key={`expense-category-goal-${goalIndex}`}
-                >
-                  <div className="flex flex-col gap-0.5">
-                    <p
-                      className={
-                        goal?.amountPending === 0 || goal?.amountPending > 0
-                          ? "text-sm md:text-md font-bold text-primary"
-                          : "text-sm md:text-md font-bold text-destructive"
-                      }
-                    >
-                      {goal.expenseCategoryTitle}
-                    </p>
-                    <p className="text-xs flex items-center gap-0.5">
-                      <span
+                <div className="flex flex-col">
+                  {goalIndex > 0 &&
+                  ((goal?.amountPending > 0 &&
+                    expenseCategoryGoals[goalIndex - 1]?.amountPending < 0) ||
+                    (goal?.amountPending === 0 &&
+                      (expenseCategoryGoals[goalIndex - 1]?.amountPending > 0 ||
+                        expenseCategoryGoals[goalIndex - 1]?.amountPending <
+                          0))) ? (
+                    <div className="mb-2 w-full h-px bg-border" />
+                  ) : (
+                    <></>
+                  )}
+                  <div
+                    className="flex gap-2 justify-between items-start"
+                    key={`expense-category-goal-${goalIndex}`}
+                  >
+                    <div className="flex flex-col gap-0.5">
+                      <p
                         className={
-                          goal?.amountPending < 0 ? "text-destructive" : ""
+                          goal?.amountPending === 0
+                            ? "text-sm md:text-md font-bold text-green-500"
+                            : goal?.amountPending > 0
+                            ? "text-sm md:text-md font-bold text-primary"
+                            : "text-sm md:text-md font-bold text-destructive"
                         }
                       >
-                        {goal?.amountPending === 0
-                          ? "Goal Complete"
-                          : goal?.amountPending > 0
-                          ? "In progress"
-                          : "Excess spent"}
-                      </span>
-                      {goal?.amountPending === 0 ? (
-                        <PartyPopper size={12} color="var(--primary)" />
-                      ) : goal?.amountPending > 0 ? (
-                        <Loader size={12} color="var(--primary)" />
-                      ) : (
-                        <Siren size={12} color="var(--destructive)" />
-                      )}
-                    </p>
+                        {goal.expenseCategoryTitle}
+                      </p>
+                      <p className="text-xs flex items-center gap-0.5">
+                        <span
+                          className={
+                            goal?.amountPending < 0
+                              ? "text-destructive"
+                              : goal?.amountPending === 0
+                              ? "text-green-500"
+                              : ""
+                          }
+                        >
+                          {goal?.amountPending === 0
+                            ? "Goal Complete"
+                            : goal?.amountPending > 0
+                            ? "In progress"
+                            : "Excess spent"}
+                        </span>
+                        {goal?.amountPending === 0 ? (
+                          <PartyPopper size={12} className="text-green-500" />
+                        ) : goal?.amountPending > 0 ? (
+                          <Loader size={12} color="var(--primary)" />
+                        ) : (
+                          <Siren size={12} color="var(--destructive)" />
+                        )}
+                      </p>
+                    </div>
+                    {goal?.amountPending === 0 ? (
+                      <CircleCheck size={16} className="text-green-500" />
+                    ) : (
+                      <p
+                        className={
+                          goal?.amountPending < 0
+                            ? "text-destructive font-medium text-sm md:text-md"
+                            : "font-medium text-sm md:text-md"
+                        }
+                      >
+                        {new Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: "INR",
+                        }).format(goal?.amountPending)}
+                      </p>
+                    )}
                   </div>
-                  {goal?.amountPending === 0 ? (
-                    <CircleCheck size={16} color="var(--primary)" />
-                  ) : (
-                    <p
-                      className={
-                        goal?.amountPending < 0
-                          ? "text-destructive font-medium text-sm md:text-md"
-                          : "font-medium text-sm md:text-md"
-                      }
-                    >
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "INR",
-                      }).format(goal?.amountPending)}
-                    </p>
-                  )}
                 </div>
               );
             })}

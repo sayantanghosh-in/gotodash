@@ -32,12 +32,17 @@ const ExpenseList = () => {
           });
           setIsEditExpenseModalOpen(false);
           loadExpenses();
+          loadExpenseCategoryGoals();
         } else {
           toast?.error(
             res?.error ||
               "Something went wrong while creating the expense record",
             {
               position: "top-center",
+              style: {
+                background: "red",
+                color: "var(--error-toast-foreground)",
+              },
             }
           );
         }
@@ -48,6 +53,10 @@ const ExpenseList = () => {
             "Something went wrong while creating the expense record",
           {
             position: "top-center",
+            style: {
+              background: "red",
+              color: "var(--error-toast-foreground)",
+            },
           }
         );
       });

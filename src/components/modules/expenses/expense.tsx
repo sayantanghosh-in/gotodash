@@ -14,7 +14,7 @@ interface ExpenseProps {
 }
 
 const Expense = (props: ExpenseProps) => {
-  const { loadExpenses } = useExpense();
+  const { loadExpenseCategoryGoals, loadExpenses } = useExpense();
   const [isEditExpenseModalOpen, setIsEditExpenseModalOpen] =
     useState<boolean>(false);
   const [isDeleteExpenseModalOpen, setIsDeleteExpenseModalOpen] =
@@ -29,12 +29,17 @@ const Expense = (props: ExpenseProps) => {
           });
           setIsEditExpenseModalOpen(false);
           loadExpenses();
+          loadExpenseCategoryGoals();
         } else {
           toast?.error(
             res?.error ||
               "Something went wrong while updating the expense record",
             {
               position: "top-center",
+              style: {
+                background: "red",
+                color: "var(--error-toast-foreground)",
+              },
             }
           );
         }
@@ -45,6 +50,10 @@ const Expense = (props: ExpenseProps) => {
             "Something went wrong while updating the expense record",
           {
             position: "top-center",
+            style: {
+              background: "red",
+              color: "var(--error-toast-foreground)",
+            },
           }
         );
       });
@@ -60,12 +69,17 @@ const Expense = (props: ExpenseProps) => {
           });
           setIsDeleteExpenseModalOpen(false);
           loadExpenses();
+          loadExpenseCategoryGoals();
         } else {
           toast?.error(
             res?.error ||
               "Something went wrong while deleting the expense record",
             {
               position: "top-center",
+              style: {
+                background: "red",
+                color: "var(--error-toast-foreground)",
+              },
             }
           );
         }
@@ -76,6 +90,10 @@ const Expense = (props: ExpenseProps) => {
             "Something went wrong while deleting the expense record",
           {
             position: "top-center",
+            style: {
+              background: "red",
+              color: "var(--error-toast-foreground)",
+            },
           }
         );
       });

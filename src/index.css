@@ -10,6 +10,9 @@ body {
 }
 
 :root {
+  /* Local variables */
+  --error-toast-foreground: oklch(0.9288 0.0126 255.5078);
+  /* Tweakcn presets */
   --background: oklch(0.9842 0.0034 247.8575);
   --foreground: oklch(0.2795 0.0368 260.031);
   --card: oklch(1 0 0);
