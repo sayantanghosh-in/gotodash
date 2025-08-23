@@ -123,20 +123,27 @@ const GithubActivity = () => {
               <span className="font-bold text-primary">{total}</span>
             )}
           </p>
-          <Button
-            asChild
-            variant="outline"
-            size="icon"
-            onClick={loadGithubActivities}
-          >
-            <div className="w-[16px] h-[16px] p-4">
-              <RefreshCcw size={16} />
-            </div>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                asChild
+                variant="outline"
+                size="icon"
+                onClick={loadGithubActivities}
+              >
+                <div className="w-[16px] h-[16px] p-4">
+                  <RefreshCcw size={16} />
+                </div>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-40 text-center">
+              It might take an hour to fetch the latest data 🏃
+            </TooltipContent>
+          </Tooltip>
         </CardTitle>
       </CardHeader>
       <CardContent className="min-h-auto overflow-hidden overflow-y-auto grid grid-cols-1 md:grid-cols-[2fr_7fr] gap-4 justify-between">
-        <div className="flex rounded-md flex-row md:flex-col items-center justify-start md:justify-center gap-2 bg-muted">
+        <div className="flex rounded-md flex-row md:flex-col items-center justify-start md:justify-center gap-2">
           <p className="text-md md:text-lg">Days Active</p>
           {isLoadingGithubActivity ? (
             <Skeleton className="h-[16px] w-[50px]" />
