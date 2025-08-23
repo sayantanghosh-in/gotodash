@@ -1,6 +1,10 @@
-import { BE_API_ENDPOINT } from "./constants";
+import {
+  BE_API_ENDPOINT,
+  GITHUB_CONTRIBUTIONS_API_ENDPOINT,
+} from "./constants";
 import type {
   CreateEditExpenseInput,
+  IGithubContribution,
   IExpense,
   IExpenseCategory,
   IExpenseCategoryGoalData,
@@ -122,6 +126,26 @@ export const checkSession = (): Promise<{
     })?.then((res) => res?.json());
   } catch (e) {
     console.error(`Delete expense error`, e);
+    return Promise?.reject(e);
+  }
+};
+
+/**
+ * Description: API to fetch Github Activity
+ * @returns {Promise<{ total?: {[key: string]: number}, contributions: IGithubContribution[] }>} - The data from the endpoint.
+ */
+export const fetchGithubActivity = (
+  year: number
+): Promise<{
+  total: { [key: string]: number };
+  contributions: IGithubContribution[];
+}> => {
+  try {
+    return fetch(`${GITHUB_CONTRIBUTIONS_API_ENDPOINT}?y=${year}`)?.then(
+      (res) => res?.json()
+    );
+  } catch (e) {
+    console.error(`Error fetching Github contributions`, e);
     return Promise?.reject(e);
   }
 };

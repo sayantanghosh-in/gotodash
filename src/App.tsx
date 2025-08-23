@@ -3,6 +3,7 @@ import { AlertCircleIcon } from "lucide-react";
 // Shadcn components
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Expenses from "@/components/modules/expenses";
+import Productivity from "@/components/modules/productivity";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 // Local components
@@ -33,7 +34,7 @@ function App() {
         setIsLoggedIn(false);
         setIsCheckingSession(false);
         window.location.replace(
-          WEBSITE_URL + "/login?redirect_url=https://gotodash.sayantanghosh.in"
+          WEBSITE_URL + `/login?redirect_url=${GOTODASH_URL}`
         );
       });
   }, []);
@@ -46,7 +47,8 @@ function App() {
             <Loader />
           </div>
         ) : isLoggedIn ? (
-          <div className="my-2 md:my-4">
+          <div className="my-2 md:my-4 flex flex-col gap-2 md:gap-4">
+            <Productivity />
             <Expenses />
           </div>
         ) : (
@@ -61,7 +63,7 @@ function App() {
                   <li>Please try to refresh the page</li>
                   <li>
                     If nothing worked, please contact me on my{" "}
-                    <a href="https://sayantanghosh.in" className="underline">
+                    <a href={WEBSITE_URL} className="underline">
                       socials
                     </a>
                   </li>

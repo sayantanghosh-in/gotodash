@@ -69,7 +69,10 @@ const ExpenseList = () => {
           <p className="flex items-center gap-1.25 text-sm md:text-md">
             <CircleDollarSign size={18} color="var(--primary)" />
             <span>
-              Payments {currentMonth}, {new Date().getFullYear()}
+              Payments:{" "}
+              <span className="font-thin underline">
+                {currentMonth}, {new Date().getFullYear()}
+              </span>
             </span>
           </p>
           <div className="flex items-center gap-2">

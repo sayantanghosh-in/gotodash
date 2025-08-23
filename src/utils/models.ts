@@ -30,3 +30,10 @@ export interface IExpenseCategoryGoal {
   amountSpent: number;
   amountPending: number;
 }
+
+export interface IGithubContribution {
+  date: string;
+  count: number;
+  level: number;
+  isPadding?: boolean; // flag to denote the start and end padding for contribution chart
+}

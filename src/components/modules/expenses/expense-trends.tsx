@@ -59,7 +59,9 @@ const ExpenseTrends = () => {
         <CardTitle>
           <p className="flex items-center gap-1.25 text-sm md:text-md">
             <ChartColumn size={18} color="var(--primary)" />
-            <span>This week</span>
+            <span>
+              Spends: <span className="font-thin underline">This week</span>
+            </span>
           </p>
         </CardTitle>
       </CardHeader>

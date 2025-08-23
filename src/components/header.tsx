@@ -1,14 +1,20 @@
 import { CodeXml, Coffee } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "./ui/button";
+import {
+  GITHUB_PROFILE_URL,
+  GOTODASH_GITHUB_PROJECT_URL,
+  GOTODASH_URL,
+  WEBSITE_URL,
+} from "@/utils/constants";
 
 const Header = () => {
   return (
-    <div className="py-4 flex justify-between gap-2 items-center border-b-2">
+    <div className="py-4 flex justify-between gap-2 items-center">
       <div className="flex items-center gap-2">
         <Button
           onClick={() => {
-            window.open("https://sayantanghosh.in", "_blank");
+            window.open(WEBSITE_URL, "_blank");
           }}
           className="cursor-pointer text-xs md:text-reg"
         >
@@ -16,7 +22,7 @@ const Header = () => {
         </Button>
       </div>
       <a
-        href="https://gotodash.sayantanghosh.in"
+        href={GOTODASH_URL}
         className="text-xl text-primary text-shadow-sm font-bold hover:underline hover:decoration-wavy"
       >
         GotoDash
@@ -27,7 +33,7 @@ const Header = () => {
           size="icon"
           className="cursor-pointer hover:animate-[sidenod_1s_ease-in-out_infinite]"
         >
-          <a href="https://github.com/sayantanghosh-in" target="_blank">
+          <a href={GITHUB_PROFILE_URL} target="_blank">
             <Coffee size={18} strokeWidth={2} className="text-white" />
           </a>
         </Button>
@@ -36,10 +42,7 @@ const Header = () => {
           size="icon"
           className="cursor-pointer hover:animate-[sidenod_1s_ease-in-out_infinite]"
         >
-          <a
-            href="https://github.com/sayantanghosh-in/gotodash"
-            target="_blank"
-          >
+          <a href={GOTODASH_GITHUB_PROJECT_URL} target="_blank">
             <CodeXml size={18} strokeWidth={2} className="text-white" />
           </a>
         </Button>
