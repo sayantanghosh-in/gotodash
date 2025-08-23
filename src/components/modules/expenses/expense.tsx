@@ -97,7 +97,7 @@ const Expense = (props: ExpenseProps) => {
           }
         );
       });
-  }, [loadExpenses, props?.expense?.id]);
+  }, [loadExpenses, loadExpenseCategoryGoals, props?.expense?.id]);
 
   return !props?.expense?.id ? (
     <></>
