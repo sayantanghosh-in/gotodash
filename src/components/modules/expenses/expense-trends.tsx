@@ -96,7 +96,7 @@ const ExpenseTrends = () => {
             <Skeleton className="h-[28px] w-[120px]" />
           ) : (
             <p className="text-reg md:text-xl px-2 border-2 border-dashed animate-[blinkingBorder_2s_ease-in-out_infinite]">
-              {totalMonthlySpends}
+              {Number(totalMonthlySpends || 0)?.toFixed(2)}
             </p>
           )}
         </div>
