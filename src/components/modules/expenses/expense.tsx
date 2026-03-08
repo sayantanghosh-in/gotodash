@@ -40,7 +40,7 @@ const Expense = (props: ExpenseProps) => {
                 background: "red",
                 color: "var(--error-toast-foreground)",
               },
-            }
+            },
           );
         }
       })
@@ -54,7 +54,7 @@ const Expense = (props: ExpenseProps) => {
               background: "red",
               color: "var(--error-toast-foreground)",
             },
-          }
+          },
         );
       });
   };
@@ -80,7 +80,7 @@ const Expense = (props: ExpenseProps) => {
                 background: "red",
                 color: "var(--error-toast-foreground)",
               },
-            }
+            },
           );
         }
       })
@@ -94,7 +94,7 @@ const Expense = (props: ExpenseProps) => {
               background: "red",
               color: "var(--error-toast-foreground)",
             },
-          }
+          },
         );
       });
   }, [loadExpenses, loadExpenseCategoryGoals, props?.expense?.id]);
@@ -126,7 +126,7 @@ const Expense = (props: ExpenseProps) => {
             <p className="text-xs">
               {format(
                 parseISO(props?.expense?.updatedAt),
-                FE_DATE_FORMAT_MINIFIED
+                FE_DATE_FORMAT_MINIFIED,
               )}
             </p>
           ) : (
@@ -134,7 +134,7 @@ const Expense = (props: ExpenseProps) => {
           )}
         </div>
         <div className="flex flex-col gap-0.75 items-end">
-          <p className="text-sm md:text-md">
+          <p className="text-sm md:text-md whitespace-nowrap">
             {new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: "INR",
