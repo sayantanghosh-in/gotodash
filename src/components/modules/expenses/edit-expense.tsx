@@ -98,6 +98,7 @@ const EditExpense = (props: EditExpenseProps) => {
           description: values?.description,
           amount: values?.amount || 0,
           expenseCategory: values?.expenseCategory as number,
+          expenseCategoryType: props?.expense?.expenseCategoryType || "SPEND",
           updatedAt: values?.updatedAt?.toISOString(),
         };
         props?.onCreateOrEdit(expensePayload);
@@ -105,7 +106,7 @@ const EditExpense = (props: EditExpenseProps) => {
         console.error(`ERR: Create/Edit expense form values`, values);
       }
     },
-    [props?.isCreate, props?.expense?.id, props?.onCreateOrEdit]
+    [props?.isCreate, props?.expense?.id, props?.onCreateOrEdit],
   );
 
   useEffect(() => {
@@ -166,13 +167,13 @@ const EditExpense = (props: EditExpenseProps) => {
                           role="combobox"
                           className={cn(
                             "justify-between",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value
                             ? expenseCategories.find(
                                 (expenseCategory) =>
-                                  expenseCategory.id === field.value
+                                  expenseCategory.id === field.value,
                               )?.title
                             : "Select a category"}
                           <ChevronsUpDown className="opacity-50" />
@@ -198,7 +199,7 @@ const EditExpense = (props: EditExpenseProps) => {
                                 onSelect={() => {
                                   form.setValue(
                                     "expenseCategory",
-                                    expenseCategory.id
+                                    expenseCategory.id,
                                   );
                                   setIsCategoryPopoverOpen(false);
                                 }}
@@ -209,7 +210,7 @@ const EditExpense = (props: EditExpenseProps) => {
                                     "ml-auto",
                                     expenseCategory.id === field.value
                                       ? "opacity-100"
-                                      : "opacity-0"
+                                      : "opacity-0",
                                   )}
                                 />
                               </CommandItem>
@@ -269,7 +270,7 @@ const EditExpense = (props: EditExpenseProps) => {
                           variant={"outline"}
                           className={cn(
                             "text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field?.value ? (
