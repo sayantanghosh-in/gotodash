@@ -58,14 +58,10 @@ const formSchema = z.object({
   description: z.string().min(2, {
     message: "Description must be at least 2 characters",
   }),
-  amount: z
-    .number({
-      coerce: true,
-      message: "Please enter a valid number",
-    })
-    .min(0, {
-      message: "Amount should be atleast 0",
-    }),
+  amount: z.number({
+    coerce: true,
+    message: "Please enter a valid number",
+  }),
   updatedAt: z.date({
     message: "Please select a valid date",
   }),
