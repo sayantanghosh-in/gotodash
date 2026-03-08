@@ -127,9 +127,10 @@ export const ExpenseProvider = ({
               amount: expense.amount,
               expenseCategory: expense.expense_category,
               expenseCategoryTitle: expense.expense_category_title,
+              expenseCategoryType: expense.expense_category_type,
               updatedAt: expense.updated_at,
               description: expense.description,
-            }))
+            })),
           );
         } else {
           console.error(res?.error);
@@ -154,10 +155,11 @@ export const ExpenseProvider = ({
             res.data.map((category) => ({
               id: category.id,
               title: category.title,
+              type: category.type,
               description: category.description,
               maxAmountPerMonth: category.max_amount_per_month,
               updatedAt: category.updated_at,
-            }))
+            })),
           );
         } else {
           console.error(res?.error);
@@ -181,9 +183,10 @@ export const ExpenseProvider = ({
           setExpenseCategoryGoals(
             res.data.map((goal) => ({
               expenseCategoryTitle: goal?.expense_category_title || "",
+              expenseCategoryType: goal?.expense_category_type || "SPEND",
               amountPending: goal?.amount_pending || 0,
               amountSpent: goal?.amount_spent || 0,
-            }))
+            })),
           );
         } else {
           console.error(res?.error);

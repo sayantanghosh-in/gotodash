@@ -110,7 +110,13 @@ const Expense = (props: ExpenseProps) => {
             setIsEditExpenseModalOpen={setIsEditExpenseModalOpen}
             expense={props?.expense}
             trigger={
-              <p className="text-sm text-left font-bold text-primary text-wrap line-clamp-2 cursor-pointer hover:underline">
+              <p
+                className={`text-sm text-left font-bold text-wrap line-clamp-2 cursor-pointer hover:underline ${
+                  props?.expense?.expenseCategoryType === "SAVINGS"
+                    ? "text-green-600"
+                    : "text-primary"
+                }`}
+              >
                 {props?.expense?.expenseCategoryTitle || "--"}
               </p>
             }

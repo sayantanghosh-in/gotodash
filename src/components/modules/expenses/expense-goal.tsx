@@ -59,8 +59,10 @@ const ExpenseGoal = () => {
                           goal?.amountPending === 0
                             ? "text-sm md:text-md font-bold text-green-500"
                             : goal?.amountPending > 0
-                            ? "text-sm md:text-md font-bold text-primary"
-                            : "text-sm md:text-md font-bold text-destructive"
+                              ? "text-sm md:text-md font-bold text-primary"
+                              : goal?.expenseCategoryType === "SAVINGS"
+                                ? "text-sm md:text-md font-bold text-green-500"
+                                : "text-sm md:text-md font-bold text-destructive"
                         }
                       >
                         {goal.expenseCategoryTitle}
@@ -69,24 +71,33 @@ const ExpenseGoal = () => {
                         <span
                           className={
                             goal?.amountPending < 0
-                              ? "text-destructive"
+                              ? goal?.expenseCategoryType === "SAVINGS"
+                                ? "text-green-500"
+                                : "text-destructive"
                               : goal?.amountPending === 0
-                              ? "text-green-500"
-                              : ""
+                                ? "text-green-500"
+                                : ""
                           }
                         >
                           {goal?.amountPending === 0
                             ? "Goal Complete"
                             : goal?.amountPending > 0
-                            ? "In progress"
-                            : "Excess spent"}
+                              ? "In progress"
+                              : "Excess spent"}
                         </span>
                         {goal?.amountPending === 0 ? (
                           <PartyPopper size={12} className="text-green-500" />
                         ) : goal?.amountPending > 0 ? (
                           <Loader size={12} color="var(--primary)" />
                         ) : (
-                          <Siren size={12} color="var(--destructive)" />
+                          <Siren
+                            size={12}
+                            className={
+                              goal?.expenseCategoryType === "SAVINGS"
+                                ? "text-green-500"
+                                : "text-destructive"
+                            }
+                          />
                         )}
                       </p>
                     </div>
@@ -96,7 +107,9 @@ const ExpenseGoal = () => {
                       <p
                         className={
                           goal?.amountPending < 0
-                            ? "text-destructive font-medium text-sm md:text-md"
+                            ? goal?.expenseCategoryType === "SAVINGS"
+                              ? "text-green-500 font-medium text-sm md:text-md"
+                              : "text-destructive font-medium text-sm md:text-md"
                             : "font-medium text-sm md:text-md"
                         }
                       >
